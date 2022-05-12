@@ -7,7 +7,7 @@
     <ProjectGuid>{34500ECA-5F29-4279-AF9D-816B6F6C9510}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Yxl</RootNamespace>
-    <AssemblyName>Yxl</AssemblyName>
+    <AssemblyName>特殊符号小程序</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

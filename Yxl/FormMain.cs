@@ -13,7 +13,7 @@ namespace Yxl
     {
         #region 字段
         /// <summary>
-        /// 内存表
+        /// 表格绑定内存表
         /// </summary>
         DataTable dt = new DataTable();
         #endregion
@@ -25,27 +25,26 @@ namespace Yxl
         public FormMain()
         {
             InitializeComponent();
-            dgv.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(dgv, true, null);//双缓冲
-            dt.DefaultView.ListChanged += (o, x) =>tslCount.Text=(o as DataView).Count.ToString();//行数改变
-            dgv.DataSource = dt;//数据绑定
-            dt.Columns.Add("sSymbol");//符号
-            dt.Columns.Add("sUnicode");//Unicode码
-            dt.Columns.Add("sHtml");//HTML实体
-            dt.Columns.Add("sType");//类型
-            dt.Columns.Add("sValue");//值
-            dt.Columns.Add("sDesc");//描述
+            dgv.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(dgv, true, null);//表格双缓冲
+            foreach (DataGridViewColumn col in dgv.Columns)//遍历表格列集
+            {
+                dt.Columns.Add(col.DataPropertyName);//添加表格列字段
+            }
+            dt.DefaultView.ListChanged += (o, x) =>tslCount.Text=(o as DataView).Count.ToString();//内存表过滤行数改变
+            dgv.DataSource = dt;//表格绑定内存表
             foreach(string line in File.ReadAllLines("yxl"))//遍历文件行集
             {
-                dt.Rows.Add(line.Split(new char[] { ' ' }, 6));//添加行 6个值
+                dt.Rows.Add(line.Split(new char[] { ' ' }, 6));//添加行 6个值 最后一列可以包含空格
             }
-            
-            string s = "㆒㆓㆔㆕㆖㆗㆘㆙㆚㆛㆜㆝㆞㆟";
+            #region 生成数据
+            string s = "♔♕♖♗♘♙♚♛♜♝♞♟";
             StringBuilder sb = new StringBuilder();
             foreach(char c in s)
             {
-                sb.AppendLine($"{c} \\u{((int)c).ToString("X")} &#{(int)c};    ");
+                sb.AppendLine($"{c} \\u{(int)c:X4} &#{(int)c};    ");
             }
-            s = sb.ToString();            
+            s = sb.ToString();
+            #endregion
         }
         #endregion
 
